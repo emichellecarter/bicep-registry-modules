@@ -200,6 +200,12 @@ module scheduledQueryRule 'br/public:avm/res/insights/scheduled-query-rule:<vers
     autoMitigate: false
     evaluationFrequency: 'PT5M'
     location: '<location>'
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     queryTimeRange: 'PT5M'
     roleAssignments: [
       {
@@ -300,6 +306,14 @@ module scheduledQueryRule 'br/public:avm/res/insights/scheduled-query-rule:<vers
     },
     "location": {
       "value": "<location>"
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
     },
     "queryTimeRange": {
       "value": "PT5M"
@@ -528,6 +542,7 @@ module scheduledQueryRule 'br/public:avm/res/insights/scheduled-query-rule:<vers
 | [`evaluationFrequency`](#parameter-evaluationfrequency) | string | How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert. |
 | [`kind`](#parameter-kind) | string | Indicates the type of scheduled query rule. |
 | [`location`](#parameter-location) | string | Location for all resources. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`queryTimeRange`](#parameter-querytimerange) | string | If specified (in ISO 8601 duration format) then overrides the query time range. Relevant only for rules of the kind LogAlert. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`ruleResolveConfiguration`](#parameter-ruleresolveconfiguration) | object | Defines the configuration for resolving fired alerts. Relevant only for rules of the kind LogAlert. |
@@ -643,6 +658,34 @@ Location for all resources.
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+
+- Required: No
+- Type: object
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | bool | Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourceIds`
+
+The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
 
 ### Parameter: `queryTimeRange`
 

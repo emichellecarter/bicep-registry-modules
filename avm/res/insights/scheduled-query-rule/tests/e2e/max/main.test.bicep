@@ -84,6 +84,12 @@ module testDeployment '../../../main.bicep' = [
       }
       evaluationFrequency: 'PT5M'
       queryTimeRange: 'PT5M'
+      managedIdentities: {
+        systemAssigned: false
+        userAssignedResourceIds: [
+          nestedDependencies.outputs.managedIdentityResourceId
+        ]
+      }
       roleAssignments: [
         {
           name: 'fa8868c7-33d3-4cd5-86a5-cbf76261035b'

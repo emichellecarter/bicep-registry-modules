@@ -22,3 +22,6 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 
 @description('The resource ID of the created Log Analytics Workspace.')
 output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.id
+
+@description('The principal ID of the created Managed Identity.')
+output managedIdentityResourceId string = managedIdentity.id

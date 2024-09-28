@@ -73,8 +73,26 @@ param suppressForMinutes string = ''
 @description('Optional. Tags of the resource.')
 param tags object?
 
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
+
 @sys.description('Optional. Enable/Disable usage telemetry for module.')
 param enableTelemetry bool = true
+
+var formattedUserAssignedIdentities = reduce(
+  map((managedIdentities.?userAssignedResourceIds ?? []), (id) => { '${id}': {} }),
+  {},
+  (cur, next) => union(cur, next)
+) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+
+var identity = !empty(managedIdentities)
+  ? {
+      type: (managedIdentities.?systemAssigned ?? true)
+        ? 'SystemAssigned'
+        : (!empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'UserAssigned' : 'None')
+      userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+    }
+  : null
 
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -125,6 +143,7 @@ resource queryRule 'Microsoft.Insights/scheduledQueryRules@2023-03-15-preview' =
   location: location
   tags: tags
   kind: kind
+  identity: identity
   properties: {
     actions: {
       actionGroups: actions
@@ -204,3 +223,11 @@ type roleAssignmentType = {
   @description('Optional. The Resource Id of the delegated managed identity resource.')
   delegatedManagedIdentityResourceId: string?
 }[]?
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourceIds: string[]?
+}?
