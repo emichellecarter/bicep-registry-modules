@@ -27,6 +27,9 @@ param kind string = 'LogAlert'
 @description('Optional. The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert.')
 param autoMitigate bool = true
 
+@description('Optional. The flag which indicates whether this scheduled query rule should be stored in a customer storage account. The default is false. Relevant only for rules of the kind LogAlert.')
+param checkWorkspaceAlertsStorageConfigured bool = false
+
 @description('Optional. If specified (in ISO 8601 duration format) then overrides the query time range. Relevant only for rules of the kind LogAlert.')
 param queryTimeRange string = ''
 
@@ -138,7 +141,7 @@ resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableT
   }
 }
 
-resource queryRule 'Microsoft.Insights/scheduledQueryRules@2023-03-15-preview' = {
+resource queryRule 'Microsoft.Insights/scheduledQueryRules@2023-12-01' = {
   name: name
   location: location
   tags: tags
@@ -150,6 +153,7 @@ resource queryRule 'Microsoft.Insights/scheduledQueryRules@2023-03-15-preview' =
       customProperties: {}
     }
     autoMitigate: (kind == 'LogAlert') ? autoMitigate : null
+    checkWorkspaceAlertsStorageConfigured: (kind == 'LogAlert') ? checkWorkspaceAlertsStorageConfigured : null
     criteria: criterias
     description: alertDescription
     displayName: alertDisplayName ?? name
@@ -193,6 +197,9 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
 output location string = queryRule.location
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedMIPrincipalId string = queryRule.?identity.?principalId ?? ''
 
 // =============== //
 //   Definitions   //

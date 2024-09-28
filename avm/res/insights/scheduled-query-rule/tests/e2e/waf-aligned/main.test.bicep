@@ -54,6 +54,7 @@ module testDeployment '../../../main.bicep' = [
       location: resourceLocation
       alertDescription: 'My sample Alert'
       autoMitigate: false
+      checkWorkspaceAlertsStorageConfigured: false
       criterias: {
         allOf: [
           {

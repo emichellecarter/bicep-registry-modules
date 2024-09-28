@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.30.23.60470",
-      "templateHash": "6699979897217115153"
+      "templateHash": "6829842125314058344"
     },
     "name": "Scheduled Query Rules",
     "description": "This module deploys a Scheduled Query Rule.",
@@ -163,6 +163,13 @@
         "description": "Optional. The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert."
       }
     },
+    "checkWorkspaceAlertsStorageConfigured": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. The flag which indicates whether this scheduled query rule should be stored in a customer storage account. The default is false. Relevant only for rules of the kind LogAlert."
+      }
+    },
     "queryTimeRange": {
       "type": "string",
       "defaultValue": "",
@@ -313,7 +320,7 @@
     },
     "queryRule": {
       "type": "Microsoft.Insights/scheduledQueryRules",
-      "apiVersion": "2023-03-15-preview",
+      "apiVersion": "2023-12-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -325,6 +332,7 @@
           "customProperties": {}
         },
         "autoMitigate": "[if(equals(parameters('kind'), 'LogAlert'), parameters('autoMitigate'), null())]",
+        "checkWorkspaceAlertsStorageConfigured": "[if(equals(parameters('kind'), 'LogAlert'), parameters('checkWorkspaceAlertsStorageConfigured'), null())]",
         "criteria": "[parameters('criterias')]",
         "description": "[parameters('alertDescription')]",
         "displayName": "[coalesce(parameters('alertDisplayName'), parameters('name'))]",
@@ -390,7 +398,14 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference('queryRule', '2023-03-15-preview', 'full').location]"
+      "value": "[reference('queryRule', '2023-12-01', 'full').location]"
+    },
+    "systemAssignedMIPrincipalId": {
+      "type": "string",
+      "metadata": {
+        "description": "The principal ID of the system assigned identity."
+      },
+      "value": "[coalesce(tryGet(tryGet(reference('queryRule', '2023-12-01', 'full'), 'identity'), 'principalId'), '')]"
     }
   }
 }

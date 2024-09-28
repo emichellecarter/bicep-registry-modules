@@ -15,7 +15,7 @@ This module deploys a Scheduled Query Rule.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/scheduledQueryRules` | [2023-03-15-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2023-03-15-preview/scheduledQueryRules) |
+| `Microsoft.Insights/scheduledQueryRules` | [2023-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2023-12-01/scheduledQueryRules) |
 
 ## Usage examples
 
@@ -198,6 +198,7 @@ module scheduledQueryRule 'br/public:avm/res/insights/scheduled-query-rule:<vers
     alertDescription: 'My sample Alert'
     alertDisplayName: '<alertDisplayName>'
     autoMitigate: false
+    checkWorkspaceAlertsStorageConfigured: false
     evaluationFrequency: 'PT5M'
     location: '<location>'
     managedIdentities: {
@@ -299,6 +300,9 @@ module scheduledQueryRule 'br/public:avm/res/insights/scheduled-query-rule:<vers
       "value": "<alertDisplayName>"
     },
     "autoMitigate": {
+      "value": false
+    },
+    "checkWorkspaceAlertsStorageConfigured": {
       "value": false
     },
     "evaluationFrequency": {
@@ -413,6 +417,7 @@ module scheduledQueryRule 'br/public:avm/res/insights/scheduled-query-rule:<vers
     // Non-required parameters
     alertDescription: 'My sample Alert'
     autoMitigate: false
+    checkWorkspaceAlertsStorageConfigured: false
     evaluationFrequency: 'PT5M'
     location: '<location>'
     queryTimeRange: 'PT5M'
@@ -484,6 +489,9 @@ module scheduledQueryRule 'br/public:avm/res/insights/scheduled-query-rule:<vers
     "autoMitigate": {
       "value": false
     },
+    "checkWorkspaceAlertsStorageConfigured": {
+      "value": false
+    },
     "evaluationFrequency": {
       "value": "PT5M"
     },
@@ -537,6 +545,7 @@ module scheduledQueryRule 'br/public:avm/res/insights/scheduled-query-rule:<vers
 | [`alertDescription`](#parameter-alertdescription) | string | The description of the scheduled query rule. |
 | [`alertDisplayName`](#parameter-alertdisplayname) | string | The display name of the scheduled query rule. |
 | [`autoMitigate`](#parameter-automitigate) | bool | The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert. |
+| [`checkWorkspaceAlertsStorageConfigured`](#parameter-checkworkspacealertsstorageconfigured) | bool | The flag which indicates whether this scheduled query rule should be stored in a customer storage account. The default is false. Relevant only for rules of the kind LogAlert. |
 | [`enabled`](#parameter-enabled) | bool | The flag which indicates whether this scheduled query rule is enabled. |
 | [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`evaluationFrequency`](#parameter-evaluationfrequency) | string | How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert. |
@@ -611,6 +620,14 @@ The flag that indicates whether the alert should be automatically resolved or no
 - Required: No
 - Type: bool
 - Default: `True`
+
+### Parameter: `checkWorkspaceAlertsStorageConfigured`
+
+The flag which indicates whether this scheduled query rule should be stored in a customer storage account. The default is false. Relevant only for rules of the kind LogAlert.
+
+- Required: No
+- Type: bool
+- Default: `False`
 
 ### Parameter: `enabled`
 
@@ -862,6 +879,7 @@ List of resource type of the target resource(s) on which the alert is created/up
 | `name` | string | The Name of the created scheduled query rule. |
 | `resourceGroupName` | string | The Resource Group of the created scheduled query rule. |
 | `resourceId` | string | The resource ID of the created scheduled query rule. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Data Collection
 
