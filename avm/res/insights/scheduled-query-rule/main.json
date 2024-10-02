@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.30.23.60470",
-      "templateHash": "8088755640911974857"
+      "templateHash": "6829842125314058344"
     },
     "name": "Scheduled Query Rules",
     "description": "This module deploys a Scheduled Query Rule.",
@@ -320,7 +320,7 @@
     },
     "queryRule": {
       "type": "Microsoft.Insights/scheduledQueryRules",
-      "apiVersion": "2023-03-15-preview",
+      "apiVersion": "2023-12-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -398,14 +398,14 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference('queryRule', '2023-03-15-preview', 'full').location]"
+      "value": "[reference('queryRule', '2023-12-01', 'full').location]"
     },
     "systemAssignedMIPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[coalesce(tryGet(tryGet(reference('queryRule', '2023-03-15-preview', 'full'), 'identity'), 'principalId'), '')]"
+      "value": "[coalesce(tryGet(tryGet(reference('queryRule', '2023-12-01', 'full'), 'identity'), 'principalId'), '')]"
     }
   }
 }
