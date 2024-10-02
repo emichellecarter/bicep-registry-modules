@@ -141,7 +141,7 @@ resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableT
   }
 }
 
-resource queryRule 'Microsoft.Insights/scheduledQueryRules@2023-03-15-preview' = {
+resource queryRule 'Microsoft.Insights/scheduledQueryRules@2023-12-01' = {
   name: name
   location: location
   tags: tags
